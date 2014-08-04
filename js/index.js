@@ -1,7 +1,7 @@
 var btn = document.getElementById("sendcoords");
 btn.addEventListener("click", function(event) {
   if (navigator.geolocation) {
-    console.log("browser supports geolocation");
+    //console.log("browser supports geolocation");
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
   }
 });
@@ -9,23 +9,23 @@ btn.addEventListener("click", function(event) {
 function onSuccess(position) {
   //
   var mycoords = [position.coords.latitude, position.coords.longitude];
-  console.log("MY COORDS: " + mycoords);
+  //console.log("MY COORDS: " + mycoords);
   sendToWorker(mycoords);
 }
 
 function onError(error) {
-  //
-  console.log(error);
+  //console.log(error);
+  alert(error);
 }
 
 function sendToWorker(mycoords) {
   var url = "http://s.codepen.io/catburston/pen/jsIgk.js";
   var task = new Worker(url);
-  console.log("TASK: " + task);
+  //console.log("TASK: " + task);
 
   task.postMessage(mycoords);
   task.onmessage = function(event) {
-    console.log("EVENT DATA: " + event.data);
+    //console.log("EVENT DATA: " + event.data);
     if (!("Notification" in window)) {
         alert("This browser does not support desktop notification"); // Let's check if the browser supports notifications
       }
@@ -47,10 +47,12 @@ function sendToWorker(mycoords) {
 }
 
 function constructNotification(url, coords) { 
-  console.log("URL: " + url);
-  console.log("COORDS: " + coords);
+  //console.log("URL: " + url);
+  //console.log("COORDS: " + coords);
+  var latitude = coords[0];
+  var longitude = coords[1];
   var notification = new Notification("Current Coordinates", {
     icon: url,
-    body: "Latitude: " + coords[0] + "\nLongitude: " + coords[1]
+    body: "Latitude: " + latitude + "\nLongitude: " + longitude
   });
 }
